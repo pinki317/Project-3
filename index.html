@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather App</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="weather-container">
+
+        <!-- Top Controls -->
+        <div class="top-controls">
+
+            <button id="themeBtn" title="Change theme">
+                🌙
+            </button>
+
+            <button id="unitBtn">
+                °C
+            </button>
+
+        </div>
+
+
+        <h1>Weather App</h1>
+
+        <p class="subtitle">
+            Check today's weather anywhere
+        </p>
+
+
+        <!-- Search -->
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="locationInput"
+                placeholder="Enter city name"
+                autocomplete="off"
+            >
+
+            <button id="searchBtn">
+                Search
+            </button>
+
+        </div>
+
+
+        <!-- Current Location -->
+        <button id="locationBtn">
+            📍 Use My Location
+        </button>
+
+
+        <!-- Error -->
+        <p id="errorMessage" class="error"></p>
+
+
+        <!-- Loading -->
+        <div id="loading" class="loading hidden">
+            Loading weather...
+        </div>
+
+
+        <!-- Current Weather -->
+        <div id="weatherCard" class="weather-card hidden">
+
+            <p id="localTime" class="local-time"></p>
+
+
+            <!-- Location Title + Favorite -->
+
+            <div class="location-title">
+
+                <h2 id="locationName">
+                    London
+                </h2>
+
+                <button
+                    id="favoriteBtn"
+                    class="favorite-btn"
+                    title="Add to favorites"
+                >
+                    ☆
+                </button>
+
+            </div>
+
+
+            <p id="countryName"></p>
+
+
+            <!-- Weather Icon -->
+
+            <img
+                id="weatherIcon"
+                src=""
+                alt="Weather icon"
+            >
+
+
+            <!-- Temperature -->
+
+            <div class="temperature">
+
+                <span id="temperature">
+                    --
+                </span>
+
+                <span id="temperatureUnit">
+                    °C
+                </span>
+
+            </div>
+
+
+            <!-- Condition -->
+
+            <p id="condition">
+                --
+            </p>
+
+
+            <!-- Details -->
+
+            <div class="weather-details">
+
+                <div>
+
+                    <span>
+                        Feels Like
+                    </span>
+
+                    <strong id="feelsLike">
+                        --°C
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Humidity
+                    </span>
+
+                    <strong id="humidity">
+                        --%
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Wind
+                    </span>
+
+                    <strong id="wind">
+                        -- km/h
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ========================================
+     WEATHER ALERTS
+======================================== -->
+
+<div id="alertsSection" class="alerts-section hidden">
+
+    <h2>⚠️ Weather Alerts</h2>
+
+    <div id="alertsContainer" class="alerts-container">
+    </div>
+
+</div>
+
+
+        <!-- Today's Highlights -->
+
+        <div
+            id="highlightsSection"
+            class="highlights-section hidden"
+        >
+
+            <h2>
+                Today's Highlights
+            </h2>
+
+            <div class="highlights-grid">
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        ☀️
+                    </span>
+
+                    <span class="highlight-label">
+                        UV Index
+                    </span>
+
+                    <strong id="uvIndex">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        👁️
+                    </span>
+
+                    <span class="highlight-label">
+                        Visibility
+                    </span>
+
+                    <strong id="visibility">
+                        -- km
+                    </strong>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        🌡️
+                    </span>
+
+                    <span class="highlight-label">
+                        Pressure
+                    </span>
+
+                    <strong id="pressure">
+                        -- mb
+                    </strong>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        ☁️
+                    </span>
+
+                    <span class="highlight-label">
+                        Cloudiness
+                    </span>
+
+                    <strong id="cloudiness">
+                        --%
+                    </strong>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        🌅
+                    </span>
+
+                    <span class="highlight-label">
+                        Sunrise
+                    </span>
+
+                    <strong id="sunrise">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="highlight-card">
+
+                    <span class="highlight-icon">
+                        🌇
+                    </span>
+
+                    <span class="highlight-label">
+                        Sunset
+                    </span>
+
+                    <strong id="sunset">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Temperature Graph -->
+
+        <div
+            id="temperatureGraphSection"
+            class="temperature-graph-section hidden"
+        >
+
+            <h2>
+                Temperature Trend
+            </h2>
+
+            <div class="temperature-graph">
+
+                <svg
+                    id="temperatureGraph"
+                    viewBox="0 0 700 260"
+                    preserveAspectRatio="none"
+                >
+
+                    <defs>
+
+                        <linearGradient
+                            id="graphGradient"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-opacity="0.35"
+                            />
+
+                            <stop
+                                offset="100%"
+                                stop-opacity="0"
+                            />
+
+                        </linearGradient>
+
+                    </defs>
+
+
+                    <path
+                        id="graphArea"
+                        class="graph-area"
+                        d=""
+                    ></path>
+
+
+                    <polyline
+                        id="graphLine"
+                        class="graph-line"
+                        points=""
+                    ></polyline>
+
+
+                    <g id="graphPoints"></g>
+
+                </svg>
+
+            </div>
+
+
+            <div
+                id="graphLabels"
+                class="graph-labels"
+            ></div>
+
+        </div>
+
+
+        <!-- Hourly Forecast -->
+
+        <div
+            id="hourlySection"
+            class="hourly-section hidden"
+        >
+
+            <h2>
+                Today's Hourly Forecast
+            </h2>
+
+            <div
+                id="hourlyContainer"
+                class="hourly-container"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- 7 Day Forecast -->
+
+        <div
+            id="forecastSection"
+            class="forecast-section hidden"
+        >
+
+            <h2>
+                7-Day Forecast
+            </h2>
+
+            <div
+                id="forecastContainer"
+                class="forecast-container"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- ========================================
+             FAVORITES & RECENT SEARCHES
+        ========================================= -->
+
+        <div class="city-tools">
+
+
+            <!-- Favorite Cities -->
+
+            <div
+                id="favoritesSection"
+                class="city-section hidden"
+            >
+
+                <h2>
+                    ⭐ Favorite Cities
+                </h2>
+
+
+                <div
+                    id="favoritesContainer"
+                    class="cities-container"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- Recent Searches -->
+
+            <div
+                id="recentSection"
+                class="city-section hidden"
+            >
+
+                <h2>
+                    🕐 Recent Searches
+                </h2>
+
+
+                <div
+                    id="recentContainer"
+                    class="cities-container"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
